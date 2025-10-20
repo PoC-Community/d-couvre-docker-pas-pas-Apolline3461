@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+	app:
+		container_name: api
+		build: ./epytodo
+		ports:
+		 - 5000:5000
+		restart: on-failure
+		environment:
+		 MYSQL_DATABASE: "epytodo"
+		 MYSQL_USER: "apolline"
+                 MYSQL_PASSWORD: "apo"
+		networks:
+		 - epytodo
+	db:
+		container_name: database
+		image: mariadb:latest
+		ports:
+		 - 3306:3306
+		environments:
+		 MYSQL_DATABASE: "epytodo"
+                 MYSQL_USER: "apolline"
+                 MYSQL_PASSWORD: "apo"
+                networks:
+                 - epytodo
+		volumes:
+		- mysql-data:/var/lib/mysql
+		- ${PWD}/epytodo/epytodo.sql:/docker-entrypoint-initdb.d/init.sql
