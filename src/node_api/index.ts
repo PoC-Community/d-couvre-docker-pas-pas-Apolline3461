@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { get } from "env-var";
 
 
 const app = express();
 
-const port: number = get('PORT').required().asPortNumber();
+const port = Number(process.env.PORT) || 8080;
 
 async function initServer() {
   app.listen(port, '0.0.0.0');
@@ -14,7 +14,7 @@ async function initServer() {
 async function main() {
   await initServer();
 
-  app.get('/', (req, res) => {
+  app.get('/', (_req: Request, res: Response) => {
     res.status(200);
     res.send("Welcome to the workshop!")
   });
